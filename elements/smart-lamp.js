@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 modal: this.querySelector(".smart-lamp-modal"),
                 modalIcon: this.querySelector(".smart-lamp-modal-icon"),
                 picker: this.querySelector(".smart-lamp-modal-color"),
+                powerToggleOn: this.querySelector(".smart-lamp-powertoggle-on"),
+                powerToggleOff: this.querySelector(".smart-lamp-powertoggle-off"),
+                powerToggleLabelOn: this.querySelector(".smart-lamp-powertoggle-label-on"),
+                powerToggleLabelOff: this.querySelector(".smart-lamp-powertoggle-label-off"),
                 state: this.querySelector(".smart-lamp-state"),
                 color: this.querySelector(".smart-lamp-color"),
                 icon: this.querySelector(".smart-lamp-icon"),
@@ -30,10 +34,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name: this.querySelectorAll(".smart-lamp-name"),
             }
 
-            const modalId = `smart-lamp-modal-${getRandomInt(1000, 9999)}`;
+            const lampId = getRandomInt(1000, 9999)
+            const modalId = `smart-lamp-modal-${lampId}`;
+            const powerToggleId = `smart-lamp-powerToggle-${lampId}`;
 
             this._element.modal.id = modalId;
             this._element.card.setAttribute('data-bs-target', `#${modalId}`);
+
+            this._element.powerToggleOn.id = `${powerToggleId}-on`;
+            this._element.powerToggleOn.setAttribute('name', powerToggleId);
+            this._element.powerToggleLabelOn.setAttribute('for', `${powerToggleId}-on`);
+            
+
+
+            this._element.powerToggleOff.id = `${powerToggleId}-off`;
+            this._element.powerToggleOff.setAttribute('name', powerToggleId);
+            this._element.powerToggleLabelOff.setAttribute('for', `${powerToggleId}-off`);
+
+            this._element.powerToggleOn.addEventListener('click', () => {powerToggle(true)})
+            this._element.powerToggleOff.addEventListener('click', () => {powerToggle(false)})
 
             this._element.state.innerHTML = "Initialisieren";
 
@@ -91,6 +110,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (this.currentColor) this.setColor(this.currentColor);
             });
 
+            const powerToggle = toggleOn => {
+                const hsv = this._picker.getColor();
+                hsv.v = toggleOn ? 100 : 0;
+                this._picker.setColor(hsv.toHSVA().toString());
+            }
+
             this.setBrightnessBar(0)
 
             this.dispatchEvent(new Event("ready"));
@@ -135,9 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const prevColorClasses = [...this._element.color.classList].filter(c => c.startsWith('bg-'))
 
             const rgbColor = hexToRgb(hexColor);
-            const hsvColor = rgbToHsv(rgbColor);
 
-            const colorBrightness = hsvColor[2] * 100;
+            const colorBrightness = rgbBrightness(rgbColor) * 100;
             const colorBrightnessOff = 20;
 
             this.setBrightnessBar(colorBrightness);
@@ -154,6 +178,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 this._element.state.innerHTML = "Aus";
 
+                this._element.powerToggleOn.checked = false;
+                this._element.powerToggleOff.checked = true;
+
                 this.setBrightnessBar(0);
                 return;
             } else {
@@ -166,6 +193,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 this._element.modalIcon.classList.add('ti-bulb')
 
                 this._element.state.innerHTML = "Ein";
+
+                this._element.powerToggleOn.checked = true;
+                this._element.powerToggleOff.checked = false;
             }
 
             if (prevColorClasses.includes(colorClass)) return;
@@ -203,7 +233,6 @@ const colors = { ...colorsClasses, white: [255, 255, 255], gray: [128, 128, 128]
 function hexToColor(hex) {
     const rgb = hexToRgb(hex);
     const color = getClosestColor(rgb);
-
     return color;
 }
 
@@ -216,30 +245,11 @@ function hexToRgb(hex) {
     ] : null;
 }
 
-function rgbToHsv(color) {
+function rgbBrightness(color) {
     [r, g, b] = color.map(c => c /= 255);
-
-    let max = Math.max(r, g, b),
-        min = Math.min(r, g, b);
-    let h, s, v = max;
-
-    let d = max - min;
-    s = max == 0 ? 0 : d / max;
-
-    if (max == min) h = 0; // achromatic
-    else {
-        switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-        }
-
-        h /= 6;
-    }
-
-    return [h, s, v];
+    let v = Math.max(r,g,b); 
+    return v;
 }
-
 
 function getColorDistance(color1, color2) {
     const [r1, g1, b1] = color1;
