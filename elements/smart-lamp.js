@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 powerToggleOff: this.querySelector(".smart-lamp-powertoggle-off"),
                 powerToggleLabelOn: this.querySelector(".smart-lamp-powertoggle-label-on"),
                 powerToggleLabelOff: this.querySelector(".smart-lamp-powertoggle-label-off"),
+                delete: this.querySelector(".smart-lamp-delete"),
                 state: this.querySelector(".smart-lamp-state"),
                 color: this.querySelector(".smart-lamp-color"),
                 icon: this.querySelector(".smart-lamp-icon"),
@@ -44,8 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             this._element.powerToggleOn.id = `${powerToggleId}-on`;
             this._element.powerToggleOn.setAttribute('name', powerToggleId);
             this._element.powerToggleLabelOn.setAttribute('for', `${powerToggleId}-on`);
-            
-
 
             this._element.powerToggleOff.id = `${powerToggleId}-off`;
             this._element.powerToggleOff.setAttribute('name', powerToggleId);
@@ -53,6 +52,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             this._element.powerToggleOn.addEventListener('click', () => {powerToggle(true)})
             this._element.powerToggleOff.addEventListener('click', () => {powerToggle(false)})
+
+            this._element.delete.addEventListener('click', () => {
+                const event = new Event("delete");
+                self.dispatchEvent(event);
+            })
 
             this._element.state.innerHTML = "Initialisieren";
 
@@ -62,22 +66,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showAlways: true,
                 inline: true,
                 lockOpacity: true,
-
-                swatches: [
-                    'rgb(244, 67, 54)',
-                    'rgb(233, 30, 99)',
-                    'rgb(156, 39, 176)',
-                    'rgb(103, 58, 183)',
-                    'rgb(63, 81, 181)',
-                    'rgb(33, 150, 243)',
-                    'rgb(3, 169, 244)',
-                    'rgb(0, 188, 212)',
-                    'rgb(0, 150, 136)',
-                    'rgb(76, 175, 80)',
-                    'rgb(139, 195, 74)',
-                    'rgb(205, 220, 57)',
-                    'rgb(255, 193, 7)'
-                ],
 
                 components: {
                     preview: true,
@@ -94,26 +82,35 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
-            this._picker.on('change', color => {
-                this.currentColor = color.toHEXA().toString();
-                this.setPreviewColor(this.currentColor);
+            const self = this;
 
-                const event = new CustomEvent("colorchange", {
-                    bubbles: true,
-                    detail: { color: this.currentColor }
-                });
+            this._picker.on('change', (color, source) => {
+                self.currentColor = color.toHEXA().toString();
+                self.setPreviewColor(self.currentColor);
 
-                this.dispatchEvent(event);
+                if (source == "slider") {
+                    sendChangeEvent();
+                }
             });
             
             this._picker.on('init', () => {
-                if (this.currentColor) this.setColor(this.currentColor);
+                if (self.currentColor) self.setColor(self.currentColor);
             });
 
             const powerToggle = toggleOn => {
                 const hsv = this._picker.getColor();
                 hsv.v = toggleOn ? 100 : 0;
                 this._picker.setColor(hsv.toHSVA().toString());
+                sendChangeEvent();
+            }
+
+            function sendChangeEvent() {
+                const event = new CustomEvent("colorchange", {
+                    bubbles: true,
+                    detail: { color: self.currentColor }
+                });
+
+                self.dispatchEvent(event);
             }
 
             this.setBrightnessBar(0)
