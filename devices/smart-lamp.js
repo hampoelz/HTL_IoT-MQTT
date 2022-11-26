@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('elements/smart-lamp.html')
+    const response = await fetch('devices/smart-lamp.html')
     const data = await response.text();
 
     // TODO: Check if lamp is initialized in methods
@@ -87,9 +87,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 self.currentColor = color.toHEXA().toString();
                 self.setPreviewColor(self.currentColor);
 
-                if (source == "slider") sendChangeEvent();
+                if (source == "slider") sendChangeEvent("color");
             });
-            
+
             this._picker.on('init', () => {
                 if (self.currentColor) self.setColor(self.currentColor);
             });
@@ -98,13 +98,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const hsv = this._picker.getColor();
                 hsv.v = toggleOn ? 100 : 0;
                 this._picker.setColor(hsv.toHSVA().toString());
-                sendChangeEvent();
+                sendChangeEvent("color");
             }
 
-            function sendChangeEvent() {
-                const event = new CustomEvent("colorchange", {
+            function sendChangeEvent(scope) {
+                if (!scope) return;
+
+                const event = new CustomEvent("propertychange", {
                     bubbles: true,
-                    detail: { color: self.currentColor }
+                    detail: { scope: scope, value: self.currentColor }
                 });
 
                 self.dispatchEvent(event);
@@ -142,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             this.setBrightnessBar(colorBrightness);
 
             // Toggle lamp UI on/off
-            if (colorBrightness < colorBrightnessOff) {
+            if (colorBrightness <= 0) {
                 this._element.color.classList.remove(...prevColorClasses, 'text-white');
                 this._element.color.classList.add('bg-white');
 
@@ -222,7 +224,7 @@ function hexToRgb(hex) {
 
 function rgbBrightness(color) {
     [r, g, b] = color.map(c => c /= 255);
-    let v = Math.max(r,g,b); 
+    let v = Math.max(r, g, b);
     return v;
 }
 
