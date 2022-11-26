@@ -1,0 +1,14 @@
+{
+    "name": "Smart-Home",
+    "short_name": "SmartHome",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#05002e",
+    "theme_color": "#05002e",
+    "icons": [
+        {
+            "src": "https://github.com/hampoelz/Branding/raw/master/rendered/logo/logo-3072x.png",
+            "type": "image/png", "sizes": "3072x3072"
+        }
+    ]
+}

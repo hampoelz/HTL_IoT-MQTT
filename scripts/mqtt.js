@@ -28,8 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const client = mqtt.connect(host, options);
 
-    // connection faild
-
     const lampContainer = document.querySelector('#lamp-container');
     const lampPlaceholder = document.querySelector('#smart-lamp-placeholder');
 

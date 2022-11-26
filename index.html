@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Smart-Home</title>
+
+  <meta name="description"
+    content="Aufgabenstellung der HTL Weiz, bei der eine IoT-Anwendung mit MQTT verwirklicht werden soll.">
+  <meta name="author" content="Rene Hampölz">
+  <link rel="icon" href="https://raw.githubusercontent.com/hampoelz/Branding/master/rendered/logo/logo-favicon.ico"
+    sizes="any">
+  <link rel="icon" href="https://raw.githubusercontent.com/hampoelz/Branding/master/web/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon"
+    href="https://raw.githubusercontent.com/hampoelz/Branding/master/rendered/logo/logo-180x-primary.png">
+
+  <link rel="manifest" href="manifest.json">
 
   <!-- tested with mqtt@4.3.7 -->
   <script src="https://cdn.jsdelivr.net/npm/mqtt@latest/dist/mqtt.min.js"></script>
@@ -47,6 +60,18 @@
 
 <body>
   <div class="page">
+    <div id="offline" class="container-xl bg-danger d-print-none d-none">
+      <div class="p-1 text-center fw-bold">
+        <i class="icon ti ti-wifi-off"></i>
+        Offline
+      </div>
+    </div>
+    <div id="online" class="container-xl bg-success d-print-none d-none">
+      <div class="p-1 text-center fw-bold">
+        <i class="icon ti ti-wifi"></i>
+        Online
+      </div>
+    </div>
     <header class="navbar navbar-expand-md navbar-light d-print-none">
       <div class="container-xl">
         <h1 class="navbar-brand d-none-navbar-horizontal pe-0 pe-md-3">
