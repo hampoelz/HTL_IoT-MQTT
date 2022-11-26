@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Toggle lamp UI on/off
             if (colorBrightness <= 0) {
                 this._element.color.classList.remove(...prevColorClasses, 'text-white');
-                this._element.color.classList.add('bg-white');
+                this._element.color.classList.add('bg-transparent');
 
                 this._element.icon.classList.remove('ti-bulb')
                 this._element.icon.classList.add('ti-bulb-off')
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 this.setBrightnessBar(0);
                 return;
             } else {
-                this._element.color.classList.remove('bg-white');
+                this._element.color.classList.remove('bg-transparent');
                 this._element.color.classList.add('text-white');
 
                 this._element.icon.classList.remove('ti-bulb-off')
