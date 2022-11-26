@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name: this.querySelectorAll(".smart-lamp-name"),
             }
 
-            const lampId = getRandomInt(1000, 9999)
+            const self = this;
+
+            const lampId = getRandomInt(0, 1000)
             const modalId = `smart-lamp-modal-${lampId}`;
             const powerToggleId = `smart-lamp-powerToggle-${lampId}`;
 
@@ -50,13 +52,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             this._element.powerToggleOff.setAttribute('name', powerToggleId);
             this._element.powerToggleLabelOff.setAttribute('for', `${powerToggleId}-off`);
 
-            this._element.powerToggleOn.addEventListener('click', () => {powerToggle(true)})
-            this._element.powerToggleOff.addEventListener('click', () => {powerToggle(false)})
+            this._element.powerToggleOn.addEventListener('click', () => powerToggle(true))
+            this._element.powerToggleOff.addEventListener('click', () => powerToggle(false))
 
             this._element.delete.addEventListener('click', () => {
-                const event = new Event("delete");
-                self.dispatchEvent(event);
-            })
+                self.dispatchEvent(new Event("delete"));
+            });
 
             this._element.state.innerHTML = "Initialisieren";
 
@@ -82,15 +83,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
-            const self = this;
-
             this._picker.on('change', (color, source) => {
                 self.currentColor = color.toHEXA().toString();
                 self.setPreviewColor(self.currentColor);
 
-                if (source == "slider") {
-                    sendChangeEvent();
-                }
+                if (source == "slider") sendChangeEvent();
             });
             
             this._picker.on('init', () => {
@@ -121,25 +118,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         setName(name) {
             this._elements.name.forEach(el => el.innerHTML = name);
         }
-
-        /*
-        setState(state) {
-            switch(state) {
-                case 'on':
-                    this._element.state.innerHTML = "Ein";
-                    break;
-                case 'off':
-                    this._element.state.innerHTML = "Aus";
-                    this.setBrightnessBar(0);
-                    break;
-                case 'error':
-                    this._element.state.innerHTML = "Fehler";
-                    break;
-                default:
-                    this._element.state.innerHTML = "Initialisieren";
-            }
-        }
-        */
 
         setColor(hexColor) {
             this.currentColor = hexColor;
@@ -173,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 this._element.modalIcon.classList.remove('ti-bulb')
                 this._element.modalIcon.classList.add('ti-bulb-off')
 
-                this._element.state.innerHTML = "Aus";
+                this._element.state.innerHTML = "Off";
 
                 this._element.powerToggleOn.checked = false;
                 this._element.powerToggleOff.checked = true;
@@ -189,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 this._element.modalIcon.classList.remove('ti-bulb-off')
                 this._element.modalIcon.classList.add('ti-bulb')
 
-                this._element.state.innerHTML = "Ein";
+                this._element.state.innerHTML = "On";
 
                 this._element.powerToggleOn.checked = true;
                 this._element.powerToggleOff.checked = false;
