@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 self.currentColor = color.toHEXA().toString();
                 self.setPreviewColor(self.currentColor);
 
-                if (source == "slider") sendChangeEvent("color");
+                if (source == "slider" || source == "input") sendChangeEvent("color");
             });
 
             this._picker.on('init', () => {
@@ -139,12 +139,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const rgbColor = hexToRgb(hexColor);
 
             const colorBrightness = rgbBrightness(rgbColor) * 100;
-            const colorBrightnessOff = 20;
+            const colorBrightnessOff = 10;
 
             this.setBrightnessBar(colorBrightness);
 
             // Toggle lamp UI on/off
-            if (colorBrightness <= 0) {
+            if (colorBrightness <= colorBrightnessOff) {
                 this._element.color.classList.remove(...prevColorClasses, 'text-white');
                 this._element.color.classList.add('bg-transparent');
 
