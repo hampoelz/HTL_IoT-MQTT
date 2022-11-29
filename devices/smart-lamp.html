@@ -1,0 +1,57 @@
+<div class="card card-link smart-lamp-card" data-bs-toggle="modal">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <span class="smart-lamp-color text-white avatar">
+                    <i class="smart-lamp-icon icon ti ti-bulb"></i>
+                </span>
+            </div>
+            <div class="col">
+                <div class="smart-lamp-name font-weight-medium"></div>
+                <div class="smart-lamp-state text-muted"></div>
+            </div>
+        </div>
+    </div>
+    <div class="smart-lamp-brightness progress progress-sm card-progress" data-bs-toggle="tooltip"
+        data-bs-placement="bottom">
+        <div class="progress-bar bg-yellow" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
+<div class="modal modal-blur fade smart-lamp-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <div class="text-center py-4">
+                    <i class="smart-lamp-modal-icon icon mb-2 icon-lg ti ti-bulb"></i>
+                    <h2 class="smart-lamp-name"></h2>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <input type="radio" class="smart-lamp-powertoggle-on btn-check" autocomplete="off">
+                        <label
+                            class="smart-lamp-powertoggle-label-on btn btn-ghost-success d-flex align-items-center p-3">
+                            <i class="icon ti ti-bulb"></i>
+                            On
+                        </label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="radio" class="smart-lamp-powertoggle-off btn-check" autocomplete="off">
+                        <label
+                            class="smart-lamp-powertoggle-label-off btn btn-ghost-danger d-flex align-items-center p-3">
+                            <i class="icon ti ti-bulb-off"></i>
+                            Off
+                        </label>
+                    </div>
+                </div>
+                <div class="hr-text">Color Picker</div>
+                <div class="col-lg-6 smart-lamp-modal-color"></div>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <a data-bs-dismiss="modal" class="smart-lamp-delete btn btn-ghost-danger">Unlink Lamp</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
