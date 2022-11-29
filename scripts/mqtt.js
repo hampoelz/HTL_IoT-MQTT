@@ -1,8 +1,8 @@
 // MQTT Connection Configuartion
-const broker = 'broker.emqx.io';
-const port = 8083;
-const username = 'emqx';
-const password = 'public';
+const broker = 'mqtt.eclipseprojects.io';
+const port = 443;
+const username = '';
+const password = '';
 
 const instanceId = getRandomInt(0, 1000);
 const clientId = `home_interface-${instanceId}`;
@@ -13,7 +13,7 @@ const topic_base = "home/lamp/";
 const topic_lamps = `${topic_base}#`
 
 document.addEventListener('DOMContentLoaded', () => {
-    const host = `ws://${broker}:${port}/mqtt`
+    const host = `wss://${broker}:${port}/mqtt`
     const options = {
         protocolId: 'MQTT',
         protocolVersion: 4,
@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
         reconnectPeriod: 1000,
         connectTimeout: 30 * 1000,
         keepalive: 60,
-        clean: true
+        clean: true,
+        useSSL: true
     }
 
     const client = mqtt.connect(host, options);
