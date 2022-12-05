@@ -2,7 +2,7 @@ let isDarkTheme = () => window.matchMedia("(prefers-color-scheme: dark)").matche
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/serviceWorker.js")
+        navigator.serviceWorker.register("serviceWorker.js")
     })
 }
 

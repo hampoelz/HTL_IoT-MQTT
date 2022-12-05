@@ -1,14 +1,14 @@
+let currentPath = self.location.href.replace("/serviceWorker.js", "");
+
 const cacheName = "smart-home-v1"
 const assets = [
     "/",
     "/index.html",
-    "/devices/",
     "/devices/smart-lamp.html",
     "/devices/smart-lamp.js",
-    "/scripts/",
     "/scripts/global.js",
     "/scripts/mqtt.js"
-]
+].map(url => currentPath + url)
 
 self.addEventListener("install", installEvent => {
     installEvent.waitUntil(
