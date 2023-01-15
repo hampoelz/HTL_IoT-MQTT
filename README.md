@@ -14,6 +14,11 @@ Die IoT-Anwendung kann beispielsweise aus einer simulierten Lampe mit einer einf
 
 Für das Projekt standen 10 Stunden an Unterrichtszeit zur Verfügung.
 
+## Zusammenspiel
+
+![overview](https://user-images.githubusercontent.com/28979769/212548071-37ca3462-7a64-4dc8-9551-7935f3d9afe4.png)
+
+
 ---
 
 <p align="center">
